@@ -1,0 +1,77 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.wide-dot</groupId>
+	<artifactId>to8-game-builder</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<properties>
+       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+       <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+       <maven.compiler.target>11</maven.compiler.target>
+       <maven.compiler.source>11</maven.compiler.source>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>2.17.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.17.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.12.0</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>fr.bento8.to8.build.BuildDisk</mainClass>
+						</manifest>
+					</archive>
+					<descriptors>
+					  <descriptor>./src/main/packaging/engine-packaging.xml</descriptor>
+					  <descriptor>./src/main/packaging/tools-packaging.xml</descriptor>
+					  <descriptor>./src/main/packaging/jar-with-dependencies.xml</descriptor>
+					</descriptors>
+				</configuration>
+			</plugin>
+
+
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.4.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+				 <finalName>ToolOne</finalName>
+					<executable>java</executable>
+					<arguments>
+						<argument>-jar</argument>
+						<argument>${project.build.outputDirectory}/game-engine-0.0.1-SNAPSHOT-jar-with-dependencies.jar</argument>
+					</arguments>
+					<mainClass>fr.bento8.to8.build.BuildDisk</mainClass>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
