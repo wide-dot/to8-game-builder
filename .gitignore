@@ -25,3 +25,5 @@ hs_err_pid*
 /.apt_generated/
 /.classpath
 /.project
+/_tmp/
+/logs/
