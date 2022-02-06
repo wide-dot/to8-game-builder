@@ -16,8 +16,8 @@ import java.util.regex.Pattern;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.widedot.to8.gamebuilder.MainProg;
 import com.widedot.to8.gamebuilder.builder.AsmSourceCode;
-import com.widedot.to8.gamebuilder.builder.BuildDisk;
 import com.widedot.to8.gamebuilder.builder.Game;
 import com.widedot.to8.gamebuilder.image.SpriteSheet;
 import com.widedot.to8.gamebuilder.util.LWASMUtil;
@@ -85,7 +85,7 @@ public class ZX0Encoder extends Encoder{
 
 		// Si l'option d'utilisation du cache est activée et qu'on trouve les fichiers .bin et .asm
 		// on passe la génération des données
-		if (!(BuildDisk.game.useCache && Files.exists(binDFile) && Files.exists(asmDFile) && Files.exists(lstDFile))) {
+		if (!(MainProg.game.useCache && Files.exists(binDFile) && Files.exists(asmDFile) && Files.exists(lstDFile))) {
 
 			//logger.debug("RAM 0 (val hex 0 à f par pixel, . Transparent):");
 			//if (logger.isDebugEnabled())
@@ -153,7 +153,7 @@ public class ZX0Encoder extends Encoder{
 		data = dataTrim;
 		alpha = alphaTrim;
 
-		if (BuildDisk.game.debug) {
+		if (MainProg.game.debug) {
 			Path path = Paths.get(Game.generatedCodeDirNameDebug+spriteName+"_"+runcount+"_rle.bin");
 			Path patha = Paths.get(Game.generatedCodeDirNameDebug+spriteName+"_"+runcount+"_rle-alpha.bin");
 	        Files.write(path, data);
@@ -178,7 +178,7 @@ public class ZX0Encoder extends Encoder{
 			
 			// Process Draw Code
 			// ****************************************************************			
-			if (!(BuildDisk.game.useCache && Files.exists(binDFile) && Files.exists(asmDFile) && Files.exists(lstDFile))) {
+			if (!(MainProg.game.useCache && Files.exists(binDFile) && Files.exists(asmDFile) && Files.exists(lstDFile))) {
 				Files.deleteIfExists(asmDFile);
 				Files.createFile(asmDFile);
 				
@@ -240,7 +240,7 @@ public class ZX0Encoder extends Encoder{
 			// Delete binary file
 			Files.deleteIfExists(binDFile);
 			
-			List<String> command = new ArrayList<>(List.of(BuildDisk.game.lwasm,
+			List<String> command = new ArrayList<>(List.of(MainProg.game.lwasm,
 					asmDrawFileName,
 					   "--output=" + binDrawFileName,
 					   "--list=" + lstDrawFileName,

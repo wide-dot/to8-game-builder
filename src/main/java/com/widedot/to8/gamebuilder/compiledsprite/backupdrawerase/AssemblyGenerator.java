@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.widedot.to8.gamebuilder.builder.BuildDisk;
+import com.widedot.to8.gamebuilder.MainProg;
 import com.widedot.to8.gamebuilder.builder.Game;
 import com.widedot.to8.gamebuilder.image.SpriteSheet;
 import com.widedot.to8.gamebuilder.instructionset.Register;
@@ -99,7 +99,7 @@ public class AssemblyGenerator{
 
 		// Si l'option d'utilisation du cache est activée et qu'on trouve les fichiers .BIN et .ASM
 		// on passe la génération du code de sprite compilé
-		if (!(BuildDisk.game.useCache && Files.exists(binDFile) && Files.exists(asmDFile) && Files.exists(lstDFile) && Files.exists(binEFile) && Files.exists(asmEFile) && Files.exists(lstEFile))) {
+		if (!(MainProg.game.useCache && Files.exists(binDFile) && Files.exists(asmDFile) && Files.exists(lstDFile) && Files.exists(binEFile) && Files.exists(asmEFile) && Files.exists(lstEFile))) {
 			
 			//logger.debug("RAM 0 (val hex 0 à f par pixel, . Transparent):");
 			//if (logger.isDebugEnabled())
@@ -112,7 +112,7 @@ public class AssemblyGenerator{
 			PatternCluster cluster = new PatternCluster(solution, spriteSheet.getCenter());
 			cluster.cluster(FORWARD);
 
-			SolutionOptim regOpt = new SolutionOptim(solution, spriteSheet.getSubImageData(imageNum, 0), BuildDisk.game.maxTries);
+			SolutionOptim regOpt = new SolutionOptim(solution, spriteSheet.getSubImageData(imageNum, 0), MainProg.game.maxTries);
 			regOpt.build();
 
 			spriteCode1 = regOpt.getAsmCode();
@@ -137,7 +137,7 @@ public class AssemblyGenerator{
 			cluster = new PatternCluster(solution, spriteSheet.getCenter());
 			cluster.cluster(FORWARD);
 
-			regOpt = new SolutionOptim(solution, spriteSheet.getSubImageData(imageNum, 1), BuildDisk.game.maxTries);
+			regOpt = new SolutionOptim(solution, spriteSheet.getSubImageData(imageNum, 1), MainProg.game.maxTries);
 			regOpt.build();
 
 			spriteCode2 = regOpt.getAsmCode();	
@@ -222,7 +222,7 @@ public class AssemblyGenerator{
 			
 			// Process BckDraw Code
 			// ****************************************************************			
-			if (!(BuildDisk.game.useCache && Files.exists(binDFile) && Files.exists(asmDFile) && Files.exists(lstDFile))) {
+			if (!(MainProg.game.useCache && Files.exists(binDFile) && Files.exists(asmDFile) && Files.exists(lstDFile))) {
 				Files.deleteIfExists(asmDFile);
 				Files.createFile(asmDFile);
 
@@ -246,7 +246,7 @@ public class AssemblyGenerator{
 
 			// Generate binary code from assembly code
 			
-			List<String> command = new ArrayList<>(List.of(BuildDisk.game.lwasm,
+			List<String> command = new ArrayList<>(List.of(MainProg.game.lwasm,
 					 asmBckDrawFileName,
 					   "--output=" + binBckDrawFileName,
 					   "--list=" + lstBckDrawFileName,
@@ -287,7 +287,7 @@ public class AssemblyGenerator{
 
 			// Process Erase Code
 			// ****************************************************************
-			if (!(BuildDisk.game.useCache && Files.exists(binEFile) && Files.exists(asmEFile) && Files.exists(lstEFile))) {
+			if (!(MainProg.game.useCache && Files.exists(binEFile) && Files.exists(asmEFile) && Files.exists(lstEFile))) {
 				Files.deleteIfExists(asmEFile);
 				Files.createFile(asmEFile);
 				
@@ -312,7 +312,7 @@ public class AssemblyGenerator{
 			// Delete binary file
 			Files.deleteIfExists(binEFile);
 			
-			command = new ArrayList<>(List.of(BuildDisk.game.lwasm,
+			command = new ArrayList<>(List.of(MainProg.game.lwasm,
 						asmEraseFileName,
 					   "--output=" + binEraseFileName,
 					   "--list=" + lstEraseFileName,

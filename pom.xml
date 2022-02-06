@@ -68,7 +68,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>com.widedot.to8.gamebuilder.builder.BuildDisk</mainClass>
+							<mainClass>com.widedot.to8.gamebuilder.MainProg</mainClass>
 						</manifest>
 					</archive>
 					<descriptors>
@@ -99,7 +99,7 @@
 						<argument>-jar</argument>
 						<argument>${project.build.outputDirectory}/game-engine-0.0.1-SNAPSHOT-jar-with-dependencies.jar</argument>
 					</arguments>
-					<mainClass>com.widedot.to8.gamebuilder.builder.BuildDisk</mainClass>
+					<mainClass>com.widedot.to8.gamebuilder.MainProg</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>

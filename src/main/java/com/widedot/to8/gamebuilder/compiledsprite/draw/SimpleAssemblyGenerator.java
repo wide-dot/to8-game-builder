@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.widedot.to8.gamebuilder.builder.BuildDisk;
+import com.widedot.to8.gamebuilder.MainProg;
 import com.widedot.to8.gamebuilder.builder.Game;
 import com.widedot.to8.gamebuilder.image.SpriteSheet;
 import com.widedot.to8.gamebuilder.image.encoder.Encoder;
@@ -85,7 +85,7 @@ public class SimpleAssemblyGenerator extends Encoder{
 
 		// Si l'option d'utilisation du cache est activée et qu'on trouve les fichiers .bin et .asm
 		// on passe la génération du code de sprite compilé
-		if (!(BuildDisk.game.useCache && Files.exists(binDFile) && Files.exists(asmDFile) && Files.exists(lstDFile))) {
+		if (!(MainProg.game.useCache && Files.exists(binDFile) && Files.exists(asmDFile) && Files.exists(lstDFile))) {
 
 			//logger.debug("RAM 0 (val hex 0 à f par pixel, . Transparent):");
 			//if (logger.isDebugEnabled())
@@ -98,7 +98,7 @@ public class SimpleAssemblyGenerator extends Encoder{
 			PatternCluster cluster = new PatternCluster(solution, spriteSheet.getCenter());
 			cluster.cluster(REARWARD);
 
-			SolutionOptim regOpt = new SolutionOptim(solution, spriteSheet.getSubImageData(imageNum, 0), BuildDisk.game.maxTries);
+			SolutionOptim regOpt = new SolutionOptim(solution, spriteSheet.getSubImageData(imageNum, 0), MainProg.game.maxTries);
 			regOpt.build();
 
 			spriteCode1 = regOpt.getAsmCode();
@@ -116,7 +116,7 @@ public class SimpleAssemblyGenerator extends Encoder{
 			cluster = new PatternCluster(solution, spriteSheet.getCenter());
 			cluster.cluster(REARWARD);
 
-			regOpt = new SolutionOptim(solution, spriteSheet.getSubImageData(imageNum, 1), BuildDisk.game.maxTries);
+			regOpt = new SolutionOptim(solution, spriteSheet.getSubImageData(imageNum, 1), MainProg.game.maxTries);
 			regOpt.build();
 
 			spriteCode2 = regOpt.getAsmCode();	
@@ -160,7 +160,7 @@ public class SimpleAssemblyGenerator extends Encoder{
 			
 			// Process Draw Code
 			// ****************************************************************			
-			if (!(BuildDisk.game.useCache && Files.exists(binDFile) && Files.exists(asmDFile) && Files.exists(lstDFile))) {
+			if (!(MainProg.game.useCache && Files.exists(binDFile) && Files.exists(asmDFile) && Files.exists(lstDFile))) {
 				Files.deleteIfExists(asmDFile);
 				Files.createFile(asmDFile);
 
@@ -182,7 +182,7 @@ public class SimpleAssemblyGenerator extends Encoder{
 			// Delete binary file
 			Files.deleteIfExists(binDFile);
 			
-			List<String> command = new ArrayList<>(List.of(BuildDisk.game.lwasm,
+			List<String> command = new ArrayList<>(List.of(MainProg.game.lwasm,
 					asmDrawFileName,
 					   "--output=" + binDrawFileName,
 					   "--list=" + lstDrawFileName,
