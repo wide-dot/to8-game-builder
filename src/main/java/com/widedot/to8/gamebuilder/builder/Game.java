@@ -7,6 +7,8 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.widedot.to8.gamebuilder.image.PngToBottomUpB16Bin;
 import com.widedot.to8.gamebuilder.ram.RamImage;
 import com.widedot.to8.gamebuilder.storage.FdUtil;
@@ -183,7 +185,8 @@ public class Game {
 			}
 			logToConsole = (prop.getProperty("builder.logToConsole").contentEquals("Y")?true:false);
 
-			t2Name = propertiesReader.get("builder.t2Name").trim().substring(0,22); // seulement 22 caractères pour le nom	
+			t2Name = propertiesReader.get("builder.t2Name").trim();
+     		t2Name = StringUtils.left(t2Name, 22); // 22 caractères uniquement, max.
 			
 			outputDiskName = prop.getProperty("builder.diskName");
 			if (outputDiskName == null) {
