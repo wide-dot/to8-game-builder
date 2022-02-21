@@ -50,6 +50,7 @@ import com.widedot.to8.gamebuilder.storage.FdUtil;
 import com.widedot.to8.gamebuilder.storage.RAMLoaderIndex;
 import com.widedot.to8.gamebuilder.storage.SdUtil;
 import com.widedot.to8.gamebuilder.storage.T2Util;
+import com.widedot.to8.gamebuilder.util.ChecksumUtils;
 import com.widedot.to8.gamebuilder.util.FileUtil;
 import com.widedot.to8.gamebuilder.util.LWASMUtil;
 import com.widedot.to8.gamebuilder.util.knapsack.Item;
@@ -92,6 +93,13 @@ public class BuildDisk
 		MainProg.game.glb.addConstant("Build_RAMLoaderManager", String.format("$%1$04X", Game.bootSizeT2));
 		MainProg.game.glb.flush();
 		//game.romT2.reserveT2Header();
+		MainProg.game.t2BootData[0x00] = 0x20; // caractère obligatoire en début du nom pour la cartouche
+		MainProg.game.t2BootData[0x17] = 0x04; // caractère finale obligatoire en fin pour la cartouche
+		byte[] data = MainProg.game.t2Name.getBytes();
+		byte checksum = ChecksumUtils.calculate(data, (byte) (0x55 + 0x20 + 0x04));
+		System.arraycopy(data, 0, MainProg.game.t2BootData, 1, data.length);
+		MainProg.game.t2BootData[0x1A] = checksum;
+
 	}
 	
 	
@@ -1933,9 +1941,22 @@ public class BuildDisk
 		AssemblyCompiler.compileRAW(bootTmpFile, MEGAROM_T2);
 		byte[] bin = Files.readAllBytes(Paths.get(getBINFileName(bootTmpFile)));
 		
+		
+		// ajout du header autocalculé
+		
+		System.arraycopy(MainProg.game.t2BootData, 0, bin, 0, MainProg.game.t2BootData.length);
+		logger.info("Appending T2 Name to the image");
+		
 		//game.romT2.writeT2Header(bin);
 		MainProg.game.romT2.setData(0, 0, bin);
+		
+		
+		
+		
 		t2.write(MainProg.game.romT2);
+		
+		
+		
 		
 		logger.info("Write Megarom T.2 Image to output file ...");
 		

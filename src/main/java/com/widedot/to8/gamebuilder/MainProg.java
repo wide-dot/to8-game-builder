@@ -51,9 +51,14 @@ public class MainProg
 			
 			Config.loadGameConfiguration(args[0]);
 			
+			log.info("T2 Name : {}", game.t2Name);
+			
+			
 			Startup.clean();
 			
 			BuildDisk.initT2();
+			log.info("T2 Raw $0000 Data : {}", game.t2BootData);
+			
 			RamLoaderCompiler.compileRAMLoader();
 			BuildDisk.generateObjectIDs();
 			BuildDisk.generateGameModeIDs();

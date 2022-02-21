@@ -46,6 +46,8 @@ public class Game {
 	public boolean debug;
 	public boolean logToConsole;	
 	public String outputDiskName;
+	public String t2Name;
+	public byte[] t2BootData = new byte[27];
 	public static String constAnim;
 	public static String generatedCodeDirName;
 	public static String generatedCodeDirNameDebug;
@@ -181,6 +183,8 @@ public class Game {
 			}
 			logToConsole = (prop.getProperty("builder.logToConsole").contentEquals("Y")?true:false);
 
+			t2Name = propertiesReader.get("builder.t2Name").trim().substring(0,22); // seulement 22 caractères pour le nom	
+			
 			outputDiskName = prop.getProperty("builder.diskName");
 			if (outputDiskName == null) {
 				throw new Exception("builder.diskName not found in "+file);
